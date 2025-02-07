@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Will You Be My Valentine?</title>
+  <style>
+    body {
+      background-color: #ffebef;
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+    h1, p {
+      color: #d6336c;
+    }
+    button {
+      font-size: 18px;
+      margin: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+    }
+    /* Yes buttons (always green) */
+    #yesBtn,
+    #guessWhatBtn,
+    #flowerYesBtn,
+    #lastWarningYesBtn,
+    #forceYesBtn,
+    #rejectYesBtn {
+      background-color: #28a745;
+      color: white;
+    }
+    /* No buttons (always red) */
+    #noBtn,
+    #rejectNoBtn,
+    #lastWarningNoBtn,
+    #flowerNoBtn {
+      background-color: #dc3545;
+      color: white;
+    }
+    /* Return/back buttons (neutral style) */
+    #backToStartBtn1,
+    #backToStartBtn2 {
+      background-color: #6c757d;
+      color: white;
+    }
+    img {
+      max-width: 300px;
+      width: auto;
+      margin-top: 20px;
+      border-radius: 10px;
+    }
+    /* Responsive styling for mobile devices */
+    @media only screen and (max-width: 600px) {
+      body {
+        padding-top: 20px;
+      }
+      h1, p {
+        font-size: 16px;
+      }
+      button {
+        font-size: 16px;
+        padding: 8px 16px;
+      }
+      img {
+        max-width: 90%;
+      }
+    }
+  </style>
+  <!-- Include the canvas-confetti library from a CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+  <!-- Initial Prompt Container -->
+  <div id="promptContainer">
+    <h1>Will you be my Valentine?</h1>
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+  
+  <!-- Reject Container (after initial No) -->
+  <div id="rejectContainer" style="display: none;">
+    <p>I swear if you say no one more time...</p>
+    <img src="Erin_Reject.jpg" alt="Rejection Image">
+    <br>
+    <button id="rejectYesBtn">Yes</button>
+    <button id="rejectNoBtn">No</button>
+  </div>
+  
+  <!-- Last Warning Container -->
+  <div id="lastWarningContainer" style="display: none;">
+    <p>Last warning!</p>
+    <img src="last_warning.jpg" alt="Last Warning Image">
+    <br>
+    <button id="lastWarningYesBtn">Yes</button>
+    <button id="lastWarningNoBtn">No</button>
+  </div>
+  
+  <!-- Force Yes Container (forces acceptance) -->
+  <div id="forceYesContainer" style="display: none;">
+    <p>Please choose the only option left:</p>
+    <button id="forceYesBtn">YES!</button>
+  </div>
+  
+  <!-- Acceptance Container (Yes Page) -->
+  <div id="acceptContainer" style="display: none;">
+    <p>Good choice! See you on Valentine's Day.</p>
+    <img src="Erin_Accept.jpg" alt="Acceptance Image">
+    <br>
+    <button id="guessWhatBtn">Guess what?</button>
+  </div>
+  
+  <!-- Flower Prompt Container -->
+  <div id="flowerPromptContainer" style="display: none;">
+    <p>Want a flower?</p>
+    <button id="flowerYesBtn">Yes</button>
+    <button id="flowerNoBtn">No</button>
+  </div>
+  
+  <!-- Flower Yes Container -->
+  <div id="flowerYesContainer" style="display: none;">
+    <p>Here's your flower!</p>
+    <img src="flower.jpg" alt="Flower Image">
+    <br>
+    <button id="backToStartBtn1">Return</button>
+  </div>
+  
+  <!-- Flower No Container -->
+  <div id="flowerNoContainer" style="display: none;">
+    <p>Maybe next time, but here's something for you:</p>
+    <img src="no_flower.jpg" alt="No Flower Image">
+    <br>
+    <button id="backToStartBtn2">Return</button>
+  </div>
+  
+  <script>
+    // Utility function to hide all containers
+    function hideAll() {
+      const containers = [
+        'promptContainer',
+        'rejectContainer',
+        'lastWarningContainer',
+        'forceYesContainer',
+        'acceptContainer',
+        'flowerPromptContainer',
+        'flowerYesContainer',
+        'flowerNoContainer'
+      ];
+      containers.forEach(function(id) {
+        document.getElementById(id).style.display = 'none';
+      });
+    }
+    
+    // Utility function to return to the start
+    function goToStart() {
+      hideAll();
+      document.getElementById('promptContainer').style.display = 'block';
+    }
+    
+    // Function to launch confetti on the acceptance screen
+    function launchConfetti() {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }
+    
+    // Initial prompt events
+    document.getElementById('yesBtn').addEventListener('click', function() {
+      hideAll();
+      document.getElementById('acceptContainer').style.display = 'block';
+      launchConfetti();
+    });
+    
+    document.getElementById('noBtn').addEventListener('click', function() {
+      hideAll();
+      document.getElementById('rejectContainer').style.display = 'block';
+    });
+    
+    // In the Reject Container:
+    document.getElementById('rejectYesBtn').addEventListener('click', function() {
+      hideAll();
+      document.getElementById('acceptContainer').style.display = 'block';
+      launchConfetti();
+    });
+    
+    document.getElementById('rejectNoBtn').addEventListener('click', function() {
+      hideAll();
+      document.getElementById('lastWarningContainer').style.display = 'block';
+    });
+    
+    // In the Last Warning Container:
+    document.getElementById('lastWarningYesBtn').addEventListener('click', function() {
+      hideAll();
+      document.getElementById('acceptContainer').style.display = 'block';
+      launchConfetti();
+    });
+    
+    document.getElementById('lastWarningNoBtn').addEventListener('click', function() {
+      hideAll();
+      document.getElementById('forceYesContainer').style.display = 'block';
+    });
+    
+    // In the Force Yes Container:
+    document.getElementById('forceYesBtn').addEventListener('click', function() {
+      hideAll();
+      document.getElementById('acceptContainer').style.display = 'block';
+      launchConfetti();
+    });
+    
+    // From the Acceptance Container, proceed to the Flower Prompt
+    document.getElementById('guessWhatBtn').addEventListener('click', function() {
+      hideAll();
+      document.getElementById('flowerPromptContainer').style.display = 'block';
+    });
+    
+    // In the Flower Prompt Container:
+    document.getElementById('flowerYesBtn').addEventListener('click', function() {
+      hideAll();
+      document.getElementById('flowerYesContainer').style.display = 'block';
+    });
+    
+    document.getElementById('flowerNoBtn').addEventListener('click', function() {
+      hideAll();
+      document.getElementById('flowerNoContainer').style.display = 'block';
+    });
+    
+    // Return buttons in the flower outcome containers
+    document.getElementById('backToStartBtn1').addEventListener('click', function() {
+      goToStart();
+    });
+    
+    document.getElementById('backToStartBtn2').addEventListener('click', function() {
+      goToStart();
+    });
+  </script>
+</body>
+</html>
+
+
